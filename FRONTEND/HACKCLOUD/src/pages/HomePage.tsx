@@ -8,7 +8,7 @@ import {
   Shield,
   TrendingUp,
 } from "lucide-react";
-import { mockUploadCSV } from "../types/mock";
+import { uploadCSV } from "../services/api";
 import { useJobStatus } from "../types/useJobStatus";
 import { Spinner } from "../components/Spinner";
 
@@ -55,7 +55,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onJobReady }) => {
     setUploading(true);
     setUploadError(null);
     try {
-      const res = await mockUploadCSV(file);
+      const res = await uploadCSV(file);
       setUploadOk(true);
       setJobId(res.jobId);
     } catch (e: unknown) {
