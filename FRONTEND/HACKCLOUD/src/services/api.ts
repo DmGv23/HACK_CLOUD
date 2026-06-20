@@ -19,7 +19,6 @@ export async function uploadCSV(file: File) {
 
   const data = await response.json();
 
-  // Si API Gateway devuelve body serializado
   return typeof data.body === "string"
     ? JSON.parse(data.body)
     : data;
@@ -33,6 +32,19 @@ export async function getResults(uploadId: string) {
 
   if (!response.ok) {
     throw new Error("Error obteniendo resultados");
+  }
+
+  return await response.json();
+}
+
+// OBTENER ESTADO
+export async function getStatus(jobId: string) {
+  const response = await fetch(
+    `${BASE_URL}/status?jobId=${jobId}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Error obteniendo estado");
   }
 
   return await response.json();
