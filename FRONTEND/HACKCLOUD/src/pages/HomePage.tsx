@@ -57,9 +57,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onJobReady }) => {
     try {
       const result = await uploadCSV(file);
       console.log(result);
-      
+
       setUploadOk(true);
-      setJobId(res.jobId);
+      setJobId(result.jobId);
     } catch (e: unknown) {
       setUploadError(
         e instanceof Error ? e.message : "Error al subir el archivo",
