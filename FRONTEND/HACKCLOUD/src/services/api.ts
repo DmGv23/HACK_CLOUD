@@ -1,27 +1,31 @@
 const BASE_URL =
   "https://bhyinl0grh.execute-api.us-east-1.amazonaws.com";
 
+// SUBIR ARCHIVO
 export async function uploadCSV(file: File) {
   const text = await file.text();
 
-  const response = await fetch(
-    `${BASE_URL}/upload`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain",
-      },
-      body: text,
-    }
-  );
+  const response = await fetch(`${BASE_URL}/upload`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain",
+    },
+    body: text,
+  });
 
   if (!response.ok) {
-    throw new Error("Error al subir archivo");
+    throw new Error("Error subiendo archivo");
   }
 
-  return await response.json();
+  const data = await response.json();
+
+  // Si API Gateway devuelve body serializado
+  return typeof data.body === "string"
+    ? JSON.parse(data.body)
+    : data;
 }
 
+// OBTENER RESULTADOS
 export async function getResults(uploadId: string) {
   const response = await fetch(
     `${BASE_URL}/results?uploadId=${uploadId}`
