@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { mockGetStatus } from '../types/mock';
+import { getStatus } from '../services/api';
 import type { StatusResponse } from '../types';
 
 export function useJobStatus(jobId: string | null) {
@@ -15,7 +15,7 @@ export function useJobStatus(jobId: string | null) {
     const poll = async () => {
       try {
         tickRef.current += 1;
-        const res = await mockGetStatus(jobId, tickRef.current);
+        const res = await getStatus(jobId);
         setStatus(res);
         if (res.status === 'COMPLETED' || res.status === 'FAILED') {
           if (intervalRef.current) clearInterval(intervalRef.current);
