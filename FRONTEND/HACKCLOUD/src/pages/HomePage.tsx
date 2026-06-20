@@ -55,7 +55,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onJobReady }) => {
     setUploading(true);
     setUploadError(null);
     try {
-      const res = await uploadCSV(file);
+      const result = await uploadCSV(file);
+      console.log(result);
+      
       setUploadOk(true);
       setJobId(res.jobId);
     } catch (e: unknown) {
