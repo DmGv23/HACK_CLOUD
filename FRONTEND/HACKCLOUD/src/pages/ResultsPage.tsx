@@ -28,11 +28,30 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ jobId }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    mockGetResults(jobId)
-      .then(setData)
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [jobId]);
+  getResults(jobId)
+    .then((projects) => {
+      setData({
+        jobId,
+        fileName: "proyectos.json",
+        status: "COMPLETED",
+        projects: projects.map((p: any) => ({
+          projectName: p.ProjectName,
+          tags: ["SOCIAL_IMPACT"],
+          status: p.Status,
+          socialImpact: p.ImpactScore,
+          technicalFeasibility: p.TechnicalScore,
+          economicFeasibility: p.EconomicScore,
+          riskLevel: p.Risk,
+          executiveSummary: p.Summary,
+          strengths: [],
+          weaknesses: [],
+          recommendations: [],
+        })),
+      });
+    })
+    .catch((e) => setError(e.message))
+    .finally(() => setLoading(false));
+}, [jobId]);
 
   if (loading)
     return (
