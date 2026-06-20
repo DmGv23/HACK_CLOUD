@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { mockGetResults } from "../types/mock";
+import { getResults } from "../services/api";
 import type { JobResults } from "../types";
 import { ProjectCard } from "../components/ProjectCard";
 import { Spinner } from "../components/Spinner";
