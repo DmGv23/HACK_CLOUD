@@ -30,22 +30,30 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ jobId }) => {
   useEffect(() => {
   getResults(jobId)
     .then((projects) => {
+      console.log("Datos listos para mapear:", projects);
+
       setData({
         jobId,
         fileName: "proyectos.json",
         status: "COMPLETED",
+        // Aquí hacemos la "traducción" exacta de tu JSON a lo que requiere el Dashboard
         projects: projects.map((p: any) => ({
-          projectName: p.ProjectName,
+          projectName: p.ProjectName || "Proyecto Sin Nombre",
           tags: ["SOCIAL_IMPACT"],
-          status: p.Status,
-          socialImpact: p.ImpactScore,
-          technicalFeasibility: p.TechnicalScore,
-          economicFeasibility: p.EconomicScore,
-          riskLevel: p.Risk,
-          executiveSummary: p.Summary,
-          strengths: [],
-          weaknesses: [],
-          recommendations: [],
+          status: p.Status || "COMPLETED",
+          
+          // Forzamos a que sean números (Number) basándonos en tus llaves exactas
+          socialImpact: Number(p.ImpactScore || 0),
+          technicalFeasibility: Number(p.TechnicalScore || 0),
+          economicFeasibility: Number(p.EconomicScore || 0),
+          
+          riskLevel: p.Risk || "Desconocido",
+          executiveSummary: p.Summary || "Sin resumen detallado.",
+          
+          // Mapeamos los arreglos usando tus llaves en español
+          strengths: p.Fortalezas || [],
+          weaknesses: p.Debilidades || [],
+          recommendations: p.Recomendaciones || [],
         })),
       });
     })
