@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Job, JobResults, StatusResponse, UploadResponse } from '../types';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://api.impactia.example.com';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://bhyinl0grh.execute-api.us-east-1.amazonaws.com';
 
 const api = axios.create({
   baseURL: BASE_URL,

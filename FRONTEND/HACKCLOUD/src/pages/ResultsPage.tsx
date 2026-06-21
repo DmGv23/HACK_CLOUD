@@ -30,30 +30,28 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ jobId }) => {
   useEffect(() => {
   getResults(jobId)
     .then((projects) => {
-      console.log("Datos listos para mapear:", projects);
+      // 1. Imprimimos en consola para ver los nombres reales de las variables
+      console.log("Datos recibidos de AWS:", projects);
 
       setData({
         jobId,
         fileName: "proyectos.json",
         status: "COMPLETED",
-        // Aquí hacemos la "traducción" exacta de tu JSON a lo que requiere el Dashboard
         projects: projects.map((p: any) => ({
-          projectName: p.ProjectName || "Proyecto Sin Nombre",
+          // 2. Mapeo robusto: Busca las variables más probables.
+          // Si abres la consola de tu navegador (F12) podrás ver el nombre exacto 
+          // y borrar las opciones que sobran aquí.
+          projectName: p.projectName || p.ProjectName || p.nombre || "Proyecto Sin Nombre",
           tags: ["SOCIAL_IMPACT"],
-          status: p.Status || "COMPLETED",
-          
-          // Forzamos a que sean números (Number) basándonos en tus llaves exactas
-          socialImpact: Number(p.ImpactScore || 0),
-          technicalFeasibility: Number(p.TechnicalScore || 0),
-          economicFeasibility: Number(p.EconomicScore || 0),
-          
-          riskLevel: p.Risk || "Desconocido",
-          executiveSummary: p.Summary || "Sin resumen detallado.",
-          
-          // Mapeamos los arreglos usando tus llaves en español
-          strengths: p.Fortalezas || [],
-          weaknesses: p.Debilidades || [],
-          recommendations: p.Recomendaciones || [],
+          status: p.status || p.Status || "COMPLETED",
+          socialImpact: Number(p.socialImpact || p.ImpactScore || p.impacto_social || p.impactoSocial || 0),
+          technicalFeasibility: Number(p.technicalFeasibility || p.TechnicalScore || p.viabilidad_tecnica || p.viabilidadTecnica || 0),
+          economicFeasibility: Number(p.economicFeasibility || p.EconomicScore || p.viabilidad_economica || p.viabilidadEconomica || 0),
+          riskLevel: p.riskLevel || p.Risk || p.riesgo || p.nivelRiesgo || "Desconocido",
+          executiveSummary: p.executiveSummary || p.Summary || p.resumen || "Sin resumen detallado.",
+          strengths: p.strengths || p.fortalezas || [],
+          weaknesses: p.weaknesses || p.debilidades || [],
+          recommendations: p.recommendations || p.recomendaciones || [],
         })),
       });
     })
